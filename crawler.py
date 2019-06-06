@@ -20,7 +20,7 @@ class crawler(CrawlSpider):
         super().__init__()
         self.start_urls = url
 
-    def parse_page(self, response):                                                                                 # Write to file for HTML data retrieved
+    def parse_page(self, response):
         try:
             global pages
             global filename
@@ -37,7 +37,7 @@ class crawler(CrawlSpider):
         except Exception:
             raise CloseSpider()
 
-if len(sys.argv) < 3:                                                                                               # *** Interpret user input
+if len(sys.argv) < 3:
     print('[ERROR] Not enough parameters:\npython crawler.py <seed file> [# pages] [# levels] <output directory>')
     exit()
 try:
@@ -66,20 +66,20 @@ if len(sys.argv) >= 4:
             exit()                                                                                                  
         elif levels < 0:
             print('[SYSTEM] Interpreting negative number of levels as infinite')
-            levels = 0                                                                                                # ***
-try:                                                                                                                # Establish output directory for HTML files
+            levels = 0
+try:
     os.makedirs(directory, exist_ok = True)
 except Exception:
     print('[ERROR] Failed to establish output directory')
     exit()
 i = 0
 filename = directory + '/' + directory + str(i) + '.html'
-while os.path.isfile(filename):                                                                                     # Find the last updated HTML file if applicable and create file names after the respective file
+while os.path.isfile(filename):
     i += 1
     filename = filename[0:len(directory + '/' + directory)] + str(i) + '.html'
 settings = get_project_settings()
 settings.update({'DEPTH_LIMIT' : levels})
-process = CrawlerProcess(settings)                                                                                  # *** Initialize spider settings and initiate crawling
+process = CrawlerProcess(settings)
 spider = crawler()
 process.crawl(spider, seed)
-process.start()                                                                                                     # ***
+process.start()
